@@ -1,4 +1,5 @@
-import { supabase } from '../config/supabaseClient.js';
+import jwt from 'jsonwebtoken';
+import pool from '../config/database.js';
 
 export const requireAuth = async (req, res, next) => {
   try {
@@ -10,15 +11,50 @@ export const requireAuth = async (req, res, next) => {
 
     const token = authHeader.replace('Bearer ', '');
 
-    const { data, error } = await supabase.auth.getUser(token);
+    // Verify JWT token
+    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'your-secret-key-change-in-production');
 
-    if (error || !data.user) {
-      return res.status(401).json({ error: 'Invalid or expired token' });
+    // Get user from database
+    const [users] = await pool.execute(
+      'SELECT id, email, full_name, role, is_active, is_blocked FROM users WHERE id = ?',
+      [decoded.userId]
+    );
+
+    if (users.length === 0) {
+      return res.status(401).json({ error: 'User not found' });
     }
 
-    req.user = data.user; // 🔥 attach user to request
+    const user = users[0];
+
+    if (!user.is_active || user.is_blocked) {
+      return res.status(403).json({ error: 'Account is inactive or blocked' });
+    }
+
+    req.user = user;
     next();
   } catch (err) {
-    res.status(500).json({ error: 'Auth middleware failed' });
+    if (err.name === 'JsonWebTokenError') {
+      return res.status(401).json({ error: 'Invalid token' });
+    }
+    if (err.name === 'TokenExpiredError') {
+      return res.status(401).json({ error: 'Token expired' });
+    }
+    console.error('Auth middleware error:', err);
+    res.status(500).json({ error: 'Authentication failed' });
   }
+};
+
+// Middleware to check if user has specific role
+export const requireRole = (...roles) => {
+  return (req, res, next) => {
+    if (!req.user) {
+      return res.status(401).json({ error: 'Authentication required' });
+    }
+
+    if (!roles.includes(req.user.role)) {
+      return res.status(403).json({ error: 'Insufficient permissions' });
+    }
+
+    next();
+  };
 };
