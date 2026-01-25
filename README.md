@@ -1,4 +1,4 @@
-# 🌾 Farm2Market - Agricultural Marketplace
+# Farm2Market - Agricultural Marketplace
 
 A full-stack agricultural marketplace platform connecting farmers and buyers.
 
@@ -101,7 +101,7 @@ After running seed data:
 - **Farmer**: farmer1@example.com / farmer123
 - **Buyer**: buyer1@example.com / buyer123
 
-⚠️ **Change passwords in production!**
+**Change passwords in production!**
 
 ## 📚 Documentation
 
