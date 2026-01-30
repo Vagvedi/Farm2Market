@@ -2,7 +2,7 @@
 
 A full-stack agricultural marketplace platform connecting farmers and buyers.
 
-## 🚀 Quick Start
+##  Quick Start
 
 ### Prerequisites
 - Node.js (v16+)
