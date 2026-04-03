@@ -1,0 +1,8 @@
+﻿INFO:     172.18.0.1:36242 - "OPTIONS /api/v1/auth/register HTTP/1.1" 200 OK
+INFO:     172.18.0.1:36242 - "POST /api/v1/auth/register HTTP/1.1" 500 Internal Server Error
+INFO:     172.18.0.1:44134 - "GET /docs HTTP/1.1" 200 OK
+INFO:     172.18.0.1:44134 - "GET /api/v1/openapi.json HTTP/1.1" 200 OK
+INFO:     172.18.0.1:44158 - "POST /api/v1/auth/register HTTP/1.1" 500 Internal Server Error
+INFO:     172.18.0.1:44170 - "POST /api/v1/auth/register HTTP/1.1" 500 Internal Server Error
+INFO:     172.18.0.1:43436 - "POST /api/v1/auth/register HTTP/1.1" 500 Internal Server Error
+INFO:     172.18.0.1:43450 - "POST /api/v1/auth/register HTTP/1.1" 500 Internal Server Error
